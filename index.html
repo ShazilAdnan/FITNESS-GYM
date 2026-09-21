@@ -1,0 +1,4295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IRON FORCE FITNESS | Elite Gym & Performance Center</title>
+  <meta name="description" content="Iron Force Fitness - Premier gym & fitness club. Build your body, build your confidence with world-class equipment, elite trainers, and modern courses." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Chart.js for Admin Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Canvas Confetti for Celebration on Registration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & THEME CONFIGURATION
+       ========================================================================== */
+    :root {
+      --bg-main: #0a0b0e;
+      --bg-surface: #12141c;
+      --bg-surface-elevated: #181b26;
+      --bg-card: rgba(24, 27, 38, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(255, 85, 0, 0.5);
+      
+      --primary: #ff5500;
+      --primary-hover: #ff6a1a;
+      --primary-glow: rgba(255, 85, 0, 0.35);
+      --primary-gradient: linear-gradient(135deg, #ff5500 0%, #ff8c00 100%);
+      --accent-gradient: linear-gradient(135deg, #181b26 0%, #222738 100%);
+      
+      --text-white: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --status-active: #10b981;
+      --status-active-bg: rgba(16, 185, 129, 0.15);
+      --status-pending: #f59e0b;
+      --status-pending-bg: rgba(245, 158, 11, 0.15);
+      --status-expired: #ef4444;
+      --status-expired-bg: rgba(239, 68, 68, 0.15);
+
+      --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-heading: 'Oswald', sans-serif;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 25px rgba(255, 85, 0, 0.25);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Light Theme support variable overrides */
+    [data-theme="light"] {
+      --bg-main: #f3f4f6;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f9fafb;
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --text-white: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ==========================================================================
+       GLOBAL RESETS & TYPOGRAPHY
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      outline: none;
+      border: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 60px;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 85, 0, 0.12);
+      border: 1px solid rgba(255, 85, 0, 0.3);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      margin-bottom: 16px;
+      color: var(--text-white);
+    }
+
+    .section-title span {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255, 85, 0, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-white);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: 0.85rem;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       STICKY NAVBAR & HEADER
+       ========================================================================== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(10, 11, 14, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .site-header.scrolled {
+      background: rgba(10, 11, 14, 0.96);
+      border-bottom: 1px solid rgba(255, 85, 0, 0.2);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: 0.08em;
+    }
+
+    .brand-logo .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--primary-gradient);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .brand-logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.92rem;
+      letter-spacing: 0.03em;
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-white);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-admin-nav {
+      background: rgba(255, 85, 0, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(255, 85, 0, 0.3);
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-admin-nav:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .hamburger-btn {
+      display: none;
+      background: none;
+      color: var(--text-white);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    /* Mobile Drawer */
+    .mobile-menu {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu .nav-link {
+      font-size: 1.1rem;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-top: 120px;
+      padding-bottom: 80px;
+      background: radial-gradient(circle at 80% 20%, rgba(255, 85, 0, 0.15) 0%, transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(30, 40, 60, 0.4) 0%, transparent 50%),
+                  var(--bg-main);
+      overflow: hidden;
+    }
+
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+      opacity: 0.18;
+      filter: grayscale(40%) contrast(120%);
+      z-index: 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 50px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 85, 0, 0.1);
+      border: 1px solid rgba(255, 85, 0, 0.35);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+      animation: pulseGlow 3s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 85, 0, 0.3); }
+      50% { box-shadow: 0 0 15px 2px rgba(255, 85, 0, 0.4); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 5.2vw, 4.4rem);
+      line-height: 1.05;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .hero-title .highlight {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 50px;
+    }
+
+    .hero-stats-banner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+      color: var(--text-white);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-item h3 span {
+      color: var(--primary);
+    }
+
+    .stat-item p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Hero Card Visual */
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card-main {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 85, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      aspect-ratio: 4/5;
+    }
+
+    .hero-card-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .hero-card-main:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-floating-badge {
+      position: absolute;
+      background: rgba(18, 20, 28, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .floating-top-right {
+      top: -20px;
+      right: -20px;
+    }
+
+    .floating-bottom-left {
+      bottom: -25px;
+      left: -20px;
+    }
+
+    .floating-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       BENEFITS & FACILITIES SECTION
+       ========================================================================== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 36px 30px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary-gradient);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 85, 0, 0.3);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(255, 85, 0, 0.1);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 85, 0, 0.1);
+      border: 1px solid rgba(255, 85, 0, 0.25);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover .feature-icon-wrapper {
+      background: var(--primary-gradient);
+      color: #fff;
+      transform: scale(1.08);
+      box-shadow: 0 0 18px var(--primary-glow);
+    }
+
+    .feature-title {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+      color: var(--text-white);
+    }
+
+    .feature-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Facility Showcase Gallery */
+    .facilities-showcase {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .facility-item {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      height: 220px;
+      border: 1px solid var(--border-color);
+    }
+
+    .facility-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .facility-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .facility-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 11, 14, 0.9) 0%, transparent 70%);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+    }
+
+    .facility-overlay h4 {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       MEMBERSHIP PACKAGES SECTION
+       ========================================================================== */
+    .billing-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .billing-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .billing-label.active {
+      color: var(--text-white);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 56px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .toggle-switch.active {
+      background: var(--primary);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .toggle-switch.active .toggle-knob {
+      transform: translateX(26px);
+    }
+
+    .discount-badge {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .package-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .package-card.popular {
+      background: linear-gradient(180deg, rgba(255, 85, 0, 0.08) 0%, var(--bg-surface) 100%);
+      border: 2px solid var(--primary);
+      box-shadow: 0 10px 40px rgba(255, 85, 0, 0.2);
+      transform: scale(1.04);
+      z-index: 2;
+    }
+
+    .package-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg), 0 0 25px rgba(255, 85, 0, 0.15);
+    }
+
+    .package-card.popular:hover {
+      transform: scale(1.04) translateY(-8px);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .package-header {
+      text-align: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 28px;
+    }
+
+    .package-name {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .package-price-wrap {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .price-currency {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .package-price {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+      line-height: 1;
+    }
+
+    .price-period {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .package-duration {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .package-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 36px;
+      flex-grow: 1;
+    }
+
+    .feature-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-line.included {
+      color: var(--text-white);
+    }
+
+    .feature-line i {
+      font-size: 0.9rem;
+    }
+
+    .feature-line.included i {
+      color: var(--status-active);
+    }
+
+    .feature-line.excluded {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .feature-line.excluded i {
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       COURSES & CLASSES SECTION
+       ========================================================================== */
+    .courses-filter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 45px;
+    }
+
+    .filter-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 30px;
+    }
+
+    .course-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 85, 0, 0.4);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .course-img-wrapper {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .course-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .course-card:hover .course-img-wrapper img {
+      transform: scale(1.08);
+    }
+
+    .course-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(10, 11, 14, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 85, 0, 0.3);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .course-price-badge {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: var(--primary-gradient);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .course-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .course-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .course-desc {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+
+    .course-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .meta-row i {
+      color: var(--primary);
+      width: 16px;
+    }
+
+    .meta-row strong {
+      color: var(--text-white);
+    }
+
+    /* ==========================================================================
+       TRAINERS SECTION
+       ========================================================================== */
+    .trainers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 30px;
+    }
+
+    .trainer-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .trainer-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 85, 0, 0.4);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(255, 85, 0, 0.1);
+    }
+
+    .trainer-img-wrapper {
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+    }
+
+    .trainer-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%);
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+
+    .trainer-card:hover .trainer-img-wrapper img {
+      transform: scale(1.06);
+      filter: grayscale(0%);
+    }
+
+    .trainer-exp-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(10, 11, 14, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .trainer-body {
+      padding: 24px 20px;
+    }
+
+    .trainer-name {
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+    }
+
+    .trainer-spec {
+      color: var(--primary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .trainer-bio {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .trainer-socials {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .trainer-social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .trainer-social-link:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       DETAILED FEES & PRICING SECTION
+       ========================================================================== */
+    .fees-table-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin-bottom: 40px;
+    }
+
+    .fees-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+      text-align: left;
+    }
+
+    .fees-table th, .fees-table td {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .fees-table th {
+      background: rgba(255, 255, 255, 0.03);
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--text-white);
+    }
+
+    .fees-table tr:hover td {
+      background: rgba(255, 85, 0, 0.03);
+    }
+
+    .fees-price {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .addon-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .addon-info h4 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .addon-info p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .addon-price {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       BMI CALCULATOR WIDGET (BONUS FEATURE)
+       ========================================================================== */
+    .bmi-section {
+      background: linear-gradient(135deg, rgba(24, 27, 38, 0.9) 0%, rgba(18, 20, 28, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 50px 40px;
+      margin: 40px 0;
+    }
+
+    .bmi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .bmi-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .bmi-input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+    }
+
+    .form-control {
+      background: rgba(10, 11, 14, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      color: var(--text-white);
+      font-size: 0.95rem;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    .bmi-result-card {
+      background: rgba(10, 11, 14, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .bmi-score {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      margin: 14px 0;
+    }
+
+    .bmi-status-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       MEMBER REGISTRATION SECTION
+       ========================================================================== */
+    .register-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 50px 45px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .register-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .required-star {
+      color: var(--primary);
+    }
+
+    .form-control select {
+      cursor: pointer;
+    }
+
+    .form-terms {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-top: 10px;
+    }
+
+    .form-terms input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       TESTIMONIALS
+       ========================================================================== */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .testi-stars {
+      color: #f59e0b;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+
+    .testi-quote {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testi-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .testi-name {
+      font-size: 1.05rem;
+      margin-bottom: 2px;
+    }
+
+    .testi-role {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       ADMIN PORTAL & MODAL DASHBOARD
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 550px;
+      padding: 40px;
+      box-shadow: var(--shadow-lg), 0 0 35px rgba(255, 85, 0, 0.15);
+      position: relative;
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    .modal-box.large {
+      max-width: 1100px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+    }
+
+    @keyframes modalSlideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: var(--transition);
+    }
+
+    .modal-close-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .admin-login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .admin-login-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: var(--radius-md);
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .admin-demo-box {
+      background: rgba(255, 85, 0, 0.08);
+      border: 1px dashed rgba(255, 85, 0, 0.4);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Dashboard Layout */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dashboard-title-area h2 {
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dashboard-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .dash-stat-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .dash-stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .dash-stat-info h4 {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .dash-stat-info .stat-number {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    /* Dashboard Tabs */
+    .dash-tabs {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .dash-tab-btn {
+      background: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 10px 20px;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dash-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .dash-tab-content {
+      display: none;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .dash-tab-content.active {
+      display: block;
+    }
+
+    /* Table Toolbar */
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .search-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 250px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .search-box input {
+      padding-left: 40px;
+    }
+
+    /* Members Table */
+    .admin-table-wrapper {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      max-height: 440px;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .admin-table th {
+      background: rgba(10, 11, 14, 0.6);
+      padding: 14px 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .admin-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+
+    .admin-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .member-cell-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .member-avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .member-meta-name {
+      font-weight: 600;
+      color: var(--text-white);
+    }
+
+    .member-meta-id {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-badge.active {
+      background: var(--status-active-bg);
+      color: var(--status-active);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-badge.pending {
+      background: var(--status-pending-bg);
+      color: var(--status-pending);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge.expired {
+      background: var(--status-expired-bg);
+      color: var(--status-expired);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .table-actions-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.85rem;
+    }
+
+    .action-icon-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .action-icon-btn.delete-btn:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* Analytics Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .chart-container-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-container-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--text-white);
+    }
+
+    /* Member Card Preview / ID Modal */
+    .id-card-preview {
+      background: linear-gradient(135deg, #181b26 0%, #0d0f17 100%);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--primary-glow);
+    }
+
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .id-card-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .id-card-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: var(--radius-md);
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .id-card-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+
+    .id-card-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       TOAST NOTIFICATIONS
+       ========================================================================== */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 300px;
+      color: var(--text-white);
+      animation: toastIn 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .toast.success { border-left-color: var(--status-active); }
+    .toast.error { border-left-color: var(--status-expired); }
+    .toast.info { border-left-color: #3b82f6; }
+
+    @keyframes toastIn {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .site-footer {
+      background: #07080a;
+      border-top: 1px solid var(--border-color);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col h4 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: var(--text-white);
+    }
+
+    .footer-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+      padding-left: 6px;
+    }
+
+    .footer-hours-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-hours-list li {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .footer-bottom {
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .security-notice {
+      background: rgba(255, 85, 0, 0.06);
+      border: 1px solid rgba(255, 85, 0, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .security-notice i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-content {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .hero-buttons {
+        justify-content: center;
+      }
+      .hero-visual {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .packages-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .package-card.popular {
+        transform: scale(1);
+      }
+      .package-card.popular:hover {
+        transform: translateY(-8px);
+      }
+      .dashboard-stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .facilities-showcase {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions .btn-primary {
+        display: none;
+      }
+      .hamburger-btn {
+        display: block;
+      }
+      .hero-stats-banner {
+        grid-template-columns: 1fr 1fr;
+      }
+      .register-grid {
+        grid-template-columns: 1fr;
+      }
+      .bmi-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .id-card-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .id-card-avatar {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      <a href="#home" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-dumbbell"></i></div>
+        <div>IRON FORCE <span>FITNESS</span></div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#benefits" class="nav-link">Benefits</a></li>
+        <li><a href="#packages" class="nav-link">Packages</a></li>
+        <li><a href="#courses" class="nav-link">Courses</a></li>
+        <li><a href="#trainers" class="nav-link">Trainers</a></li>
+        <li><a href="#pricing" class="nav-link">Fees</a></li>
+        <li><a href="#register" class="nav-link">Join Now</a></li>
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <button class="btn-admin-nav" id="openAdminLoginBtn" onclick="openAdminModal()">
+          <i class="fa-solid fa-shield-halved"></i> Admin Portal
+        </button>
+        <a href="#register" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-bolt"></i> Free Pass
+        </a>
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" class="nav-link" onclick="closeMobileMenu()">Home</a>
+      <a href="#benefits" class="nav-link" onclick="closeMobileMenu()">Benefits</a>
+      <a href="#packages" class="nav-link" onclick="closeMobileMenu()">Packages</a>
+      <a href="#courses" class="nav-link" onclick="closeMobileMenu()">Courses & Classes</a>
+      <a href="#trainers" class="nav-link" onclick="closeMobileMenu()">Trainers</a>
+      <a href="#pricing" class="nav-link" onclick="closeMobileMenu()">Fees & Pricing</a>
+      <a href="#bmi" class="nav-link" onclick="closeMobileMenu()">BMI Calculator</a>
+      <a href="#register" class="nav-link" onclick="closeMobileMenu()">Register Now</a>
+      <button class="btn btn-primary btn-block" onclick="openAdminModal(); closeMobileMenu();">
+        <i class="fa-solid fa-shield-halved"></i> Admin Login
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== -->
+  <section class="hero-section" id="home">
+    <div class="hero-bg-overlay"></div>
+    <div class="container hero-grid">
+      
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-fire"></i> #1 PREMIER PERFORMANCE GYM & HEALTH CLUB
+        </div>
+        <h1 class="hero-title">
+          BUILD YOUR BODY.<br />
+          BUILD YOUR <span class="highlight">CONFIDENCE.</span>
+        </h1>
+        <p class="hero-desc">
+          Unleash your ultimate physical potential with elite biomechanical equipment, world-class certified trainers, and personalized conditioning programs designed for champions.
+        </p>
+        
+        <div class="hero-buttons">
+          <a href="#register" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus"></i> Join Now
+          </a>
+          <a href="#packages" class="btn btn-secondary">
+            <i class="fa-solid fa-tags"></i> Explore Packages
+          </a>
+        </div>
+
+        <!-- Live Stats Banner -->
+        <div class="hero-stats-banner">
+          <div class="stat-item">
+            <h3><span id="heroStatMembers">1,850</span>+</h3>
+            <p>Active Members</p>
+          </div>
+          <div class="stat-item">
+            <h3>25<span>+</span></h3>
+            <p>Pro Trainers</p>
+          </div>
+          <div class="stat-item">
+            <h3>45<span>+</span></h3>
+            <p>Weekly Classes</p>
+          </div>
+          <div class="stat-item">
+            <h3>99<span>%</span></h3>
+            <p>Goal Success</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Graphics -->
+      <div class="hero-visual">
+        <div class="hero-floating-badge floating-top-right">
+          <div class="floating-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div>
+            <h4 style="font-size: 1rem; color: #fff;">Top Rated Club</h4>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">5.0 ★★★★★ (450+ Reviews)</p>
+          </div>
+        </div>
+
+        <div class="hero-card-main">
+          <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1000&auto=format&fit=crop" alt="Iron Force Fitness Training" />
+        </div>
+
+        <div class="hero-floating-badge floating-bottom-left">
+          <div class="floating-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 1rem; color: #fff;">24/7 VIP Access</h4>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">State of the art recovery zone</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       GYM BENEFITS & FACILITIES SECTION
+       ========================================================================== -->
+  <section class="section" id="benefits">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-medal"></i> Why Choose Iron Force</div>
+        <h2 class="section-title">ENGINEERED FOR <span>SUPERIOR RESULTS</span></h2>
+        <p class="section-subtitle">Experience our high-performance facility equipped with state-of-the-art strength lines, cardio zones, and luxury recovery amenities.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-clock"></i></div>
+          <h3 class="feature-title">24/7 Biometric Access</h3>
+          <p class="feature-desc">Train on your schedule. Enjoy seamless round-the-clock secure entry with biometric recognition and 24-hour video surveillance.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-dumbbell"></i></div>
+          <h3 class="feature-title">Eleiko & Hammer Strength</h3>
+          <p class="feature-desc">Top-of-the-line competition barbells, calibrated steel plates, heavy dumbbells up to 150 lbs, and ISO-lateral plate-loaded machines.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-user-ninja"></i></div>
+          <h3 class="feature-title">Elite Certified Coaches</h3>
+          <p class="feature-desc">Work with NASM and CSCS certified strength coaches dedicated to crafting structured periodized training for rapid progress.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-spa"></i></div>
+          <h3 class="feature-title">Cryo & Infrared Recovery</h3>
+          <p class="feature-desc">Accelerate muscular recovery and relieve inflammation with our Finnish dry sauna, contrast cold plunges, and compression gear.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-apple-whole"></i></div>
+          <h3 class="feature-title">Nutrition & Macro Coaching</h3>
+          <p class="feature-desc">Custom meal templates, InBody 570 body composition scans, and ongoing macro nutritional adjustments to optimize fat loss and muscle gain.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper"><i class="fa-solid fa-users"></i></div>
+          <h3 class="feature-title">High-Energy Group Classes</h3>
+          <p class="feature-desc">Fuel your workout with dynamic community energy in our signature HIIT, Olympic lifting, and power yoga sessions.</p>
+        </div>
+      </div>
+
+      <!-- Visual Facility Gallery -->
+      <div class="facilities-showcase">
+        <div class="facility-item">
+          <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop" alt="Free Weights Room" />
+          <div class="facility-overlay"><h4>Heavy Weight Zone</h4></div>
+        </div>
+        <div class="facility-item">
+          <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop" alt="Cardio Theater" />
+          <div class="facility-overlay"><h4>Cardio Amphitheater</h4></div>
+        </div>
+        <div class="facility-item">
+          <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop" alt="Functional Turf Area" />
+          <div class="facility-overlay"><h4>CrossFit & Turf Arena</h4></div>
+        </div>
+        <div class="facility-item">
+          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=600&auto=format&fit=crop" alt="Sauna & Recovery" />
+          <div class="facility-overlay"><h4>Sauna & Spa Recovery</h4></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MEMBERSHIP PACKAGES SECTION
+       ========================================================================== */
+  -->
+  <section class="section" id="packages" style="background: var(--bg-surface-elevated);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-gem"></i> Membership Tiers</div>
+        <h2 class="section-title">TRANSPARENT <span>MEMBERSHIP PLANS</span></h2>
+        <p class="section-subtitle">Choose the perfect tier tailored to your fitness ambition. No hidden sign-up fees. Cancel anytime.</p>
+      </div>
+
+      <!-- Billing Toggle Switch -->
+      <div class="billing-toggle-wrapper">
+        <span class="billing-label active" id="monthlyLabel" onclick="setBillingCycle('monthly')">Monthly Billing</span>
+        <div class="toggle-switch" id="billingToggle" onclick="toggleBillingCycle()">
+          <div class="toggle-knob"></div>
+        </div>
+        <span class="billing-label" id="annualLabel" onclick="setBillingCycle('annual')">
+          Annual Billing <span class="discount-badge">Save 20% + 2 Mo Free</span>
+        </span>
+      </div>
+
+      <!-- 3 Packages Cards -->
+      <div class="packages-grid">
+        
+        <!-- Basic Plan -->
+        <div class="package-card">
+          <div class="package-header">
+            <h3 class="package-name">Basic Package</h3>
+            <div class="package-price-wrap">
+              <span class="price-currency">$</span>
+              <span class="package-price" data-monthly="29" data-annual="24">29</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <p class="package-duration">Standard Monthly Contract</p>
+          </div>
+
+          <ul class="package-features">
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Full Gym Floor Access (5am - 10pm)</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> All Free Weights & Resistance Machines</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Modern Locker & Shower Amenities</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Free Iron Force Mobile Fitness App</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> 24/7 Keycard Night Access</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> Unlimited Group Fitness Classes</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> Infrared Sauna & Cold Plunge Access</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> Monthly 1-on-1 Personal Trainer Session</li>
+          </ul>
+
+          <button class="btn btn-secondary btn-block" onclick="selectPackageAndRegister('Basic Package')">
+            <i class="fa-solid fa-arrow-right"></i> Join Basic
+          </button>
+        </div>
+
+        <!-- Standard Plan (POPULAR) -->
+        <div class="package-card popular">
+          <div class="popular-tag"><i class="fa-solid fa-fire"></i> Most Popular</div>
+          <div class="package-header">
+            <h3 class="package-name">Standard Package</h3>
+            <div class="package-price-wrap">
+              <span class="price-currency">$</span>
+              <span class="package-price" data-monthly="49" data-annual="39">49</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <p class="package-duration">Full Gym & Class Access</p>
+          </div>
+
+          <ul class="package-features">
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> <strong>24/7 Unlimited Gym Access</strong></li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> All Free Weights & Functional Turf Zones</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> <strong>Unlimited Group Fitness & Yoga Classes</strong></li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Full Sauna & Steam Room Access</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> 2 Free Guest Passes / Month</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Monthly InBody Body Composition Scan</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> 1-on-1 Dedicated Trainer Sessions</li>
+            <li class="feature-line excluded"><i class="fa-solid fa-circle-xmark"></i> VIP Custom Diet Plan</li>
+          </ul>
+
+          <button class="btn btn-primary btn-block" onclick="selectPackageAndRegister('Standard Package')">
+            <i class="fa-solid fa-bolt"></i> Join Standard
+          </button>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="package-card">
+          <div class="package-header">
+            <h3 class="package-name">Premium Package</h3>
+            <div class="package-price-wrap">
+              <span class="price-currency">$</span>
+              <span class="package-price" data-monthly="79" data-annual="64">79</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <p class="package-duration">All-Inclusive VIP Experience</p>
+          </div>
+
+          <ul class="package-features">
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> <strong>24/7 VIP All-Area Access</strong></li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Unlimited Group, CrossFit & HIIT Classes</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> <strong>2 Personal Training Sessions / Month</strong></li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Cryotherapy & Infrared Recovery Suite</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Custom Nutritional Blueprint & Macro Plan</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Unlimited Guest Passes (Bring a Friend)</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Free Protein Shake at Shake Bar / Visit</li>
+            <li class="feature-line included"><i class="fa-solid fa-check-circle"></i> Dedicated Private VIP Locker</li>
+          </ul>
+
+          <button class="btn btn-secondary btn-block" onclick="selectPackageAndRegister('Premium Package')">
+            <i class="fa-solid fa-crown"></i> Join Premium VIP
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       COURSES AND CLASSES SECTION
+       ========================================================================== -->
+  <section class="section" id="courses">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-bullseye"></i> Training Disciplines</div>
+        <h2 class="section-title">SPECIALIZED <span>COURSES & CLASSES</span></h2>
+        <p class="section-subtitle">Led by master trainers, our focused classes are structured to maximize caloric burn, hypertrophy, and functional longevity.</p>
+      </div>
+
+      <!-- Course Category Filter -->
+      <div class="courses-filter">
+        <button class="filter-btn active" onclick="filterCourses('all')">All Courses</button>
+        <button class="filter-btn" onclick="filterCourses('strength')">Strength & Hypertrophy</button>
+        <button class="filter-btn" onclick="filterCourses('cardio')">Cardio & HIIT</button>
+        <button class="filter-btn" onclick="filterCourses('mind')">Mind & Flexibility</button>
+        <button class="filter-btn" onclick="filterCourses('crossfit')">CrossFit & Power</button>
+      </div>
+
+      <!-- Courses Grid (6 Specified Courses) -->
+      <div class="courses-grid" id="coursesGrid">
+        
+        <!-- 1. Weight Training -->
+        <div class="course-card" data-category="strength">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" alt="Weight Training" />
+            <span class="course-badge">Strength</span>
+            <span class="course-price-badge">$45/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">Weight Training</h3>
+            <p class="course-desc">Master compound barbell lifts, hypertrophy routines, and progressive overload under certified powerlifting coaches.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach Marcus Vance</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Mon, Wed, Fri (06:00 - 08:00 AM)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$45 / month (Free for VIP)</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('Weight Training')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Cardio Fitness -->
+        <div class="course-card" data-category="cardio">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1434608519344-49d77a699e1d?q=80&w=800&auto=format&fit=crop" alt="Cardio Fitness" />
+            <span class="course-badge">Cardio</span>
+            <span class="course-price-badge">$35/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">Cardio Fitness</h3>
+            <p class="course-desc">High-tempo endurance conditioning combining rowing intervals, assault bikes, sprint mechanics, and metabolic conditioning.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach Elena Rostova</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Tue, Thu, Sat (07:00 - 08:30 AM)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$35 / month</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('Cardio Fitness')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Yoga -->
+        <div class="course-card" data-category="mind">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="Power Yoga" />
+            <span class="course-badge">Mind & Body</span>
+            <span class="course-price-badge">$30/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">Power Yoga</h3>
+            <p class="course-desc">Harmonize muscular stability, core strength, dynamic balance, and breathing control in an ambient heated studio.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach Priya Sharma</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Daily (06:30 - 07:45 AM & PM)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$30 / month</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('Yoga')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. CrossFit -->
+        <div class="course-card" data-category="crossfit">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=800&auto=format&fit=crop" alt="CrossFit WOD" />
+            <span class="course-badge">CrossFit</span>
+            <span class="course-price-badge">$55/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">CrossFit WOD</h3>
+            <p class="course-desc">High-octane constantly varied functional movements: gymnastics, Olympic snatch & clean, kettlebell snatch, and sled pushes.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach Jaxson Thorne</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Mon to Fri (06:00 PM - 07:30 PM)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$55 / month</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('CrossFit')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Personal Training -->
+        <div class="course-card" data-category="strength">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" alt="Personal Training" />
+            <span class="course-badge">1-on-1 Elite</span>
+            <span class="course-price-badge">$80/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">Personal Training</h3>
+            <p class="course-desc">One-on-one tailored coaching with customized periodization, corrective exercises, body composition tracking, and accountability.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach David Miller</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Flexible Appointment Slots (6am - 9pm)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$80 / month (4 Dedicated Sessions)</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('Personal Training')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Strength & Conditioning -->
+        <div class="course-card" data-category="strength">
+          <div class="course-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=800&auto=format&fit=crop" alt="Strength and Conditioning" />
+            <span class="course-badge">Performance</span>
+            <span class="course-price-badge">$50/mo</span>
+          </div>
+          <div class="course-body">
+            <h3 class="course-title">Strength & Conditioning</h3>
+            <p class="course-desc">Athletic performance enhancement targeting sprint velocity, vertical jump, rotational power, and injury resistance.</p>
+            <div class="course-meta">
+              <div class="meta-row"><i class="fa-solid fa-user"></i> <span>Trainer: <strong>Coach Sarah Connor</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-calendar-days"></i> <span>Schedule: <strong>Mon, Wed, Sat (05:00 - 06:30 PM)</strong></span></div>
+              <div class="meta-row"><i class="fa-solid fa-tag"></i> <span>Course Fee: <strong>$50 / month</strong></span></div>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="selectCourseAndRegister('Strength & Conditioning')">
+              <i class="fa-solid fa-check"></i> Register for Course
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TRAINERS SECTION
+       ========================================================================== -->
+  <section class="section" id="trainers" style="background: var(--bg-surface-elevated);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-user-shield"></i> The Mentors</div>
+        <h2 class="section-title">MEET OUR <span>ELITE COACHES</span></h2>
+        <p class="section-subtitle">Our certified trainers have coached collegiate athletes, physique champions, and everyday fitness enthusiasts.</p>
+      </div>
+
+      <div class="trainers-grid">
+        
+        <!-- Trainer 1 -->
+        <div class="trainer-card">
+          <div class="trainer-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=800&auto=format&fit=crop" alt="Coach Marcus Vance" />
+            <span class="trainer-exp-badge">10+ Yrs Exp</span>
+          </div>
+          <div class="trainer-body">
+            <h3 class="trainer-name">Marcus Vance</h3>
+            <p class="trainer-spec">Head of Hypertrophy & Power</p>
+            <p class="trainer-bio">Former national competitive powerlifter and CSCS specialist helping athletes shatter PR plateaus safely.</p>
+            <div class="trainer-socials">
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trainer 2 -->
+        <div class="trainer-card">
+          <div class="trainer-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=800&auto=format&fit=crop" alt="Coach Elena Rostova" />
+            <span class="trainer-exp-badge">8+ Yrs Exp</span>
+          </div>
+          <div class="trainer-body">
+            <h3 class="trainer-name">Elena Rostova</h3>
+            <p class="trainer-spec">HIIT & Metabolic Conditioning</p>
+            <p class="trainer-bio">NASM Master Trainer specializing in high-intensity cardiovascular conditioning and rapid fat loss programming.</p>
+            <div class="trainer-socials">
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trainer 3 -->
+        <div class="trainer-card">
+          <div class="trainer-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=800&auto=format&fit=crop" alt="Coach Jaxson Thorne" />
+            <span class="trainer-exp-badge">9+ Yrs Exp</span>
+          </div>
+          <div class="trainer-body">
+            <h3 class="trainer-name">Jaxson Thorne</h3>
+            <p class="trainer-spec">CrossFit Level 3 Coach</p>
+            <p class="trainer-bio">Former military physical trainer passionate about functional strength, kettlebell mastery, and mental resilience.</p>
+            <div class="trainer-socials">
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trainer 4 -->
+        <div class="trainer-card">
+          <div class="trainer-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" alt="Coach Priya Sharma" />
+            <span class="trainer-exp-badge">7+ Yrs Exp</span>
+          </div>
+          <div class="trainer-body">
+            <h3 class="trainer-name">Priya Sharma</h3>
+            <p class="trainer-spec">Yoga Master & Mobility Coach</p>
+            <p class="trainer-bio">500-hr RYT certified yoga instructor focused on biomechanical alignment, flexibility, and athletic longevity.</p>
+            <div class="trainer-socials">
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" class="trainer-social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       DETAILED FEES AND PRICING
+       ========================================================================== -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-receipt"></i> Full Transparency</div>
+        <h2 class="section-title">DETAILED <span>FEES & PRICING</span></h2>
+        <p class="section-subtitle">Clear breakdown of membership frequencies, personal training packages, and facility inclusions.</p>
+      </div>
+
+      <!-- Fees Comparison Table -->
+      <div class="fees-table-wrapper">
+        <table class="fees-table">
+          <thead>
+            <tr>
+              <th>Plan Tier</th>
+              <th>Monthly Fee</th>
+              <th>Quarterly (Save 15%)</th>
+              <th>Yearly (Save 25%)</th>
+              <th>Included Facilities</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Basic Tier</strong></td>
+              <td><span class="fees-price">$29</span> / mo</td>
+              <td><strong>$74</strong> ($24.6/mo)</td>
+              <td><strong>$260</strong> ($21.6/mo)</td>
+              <td>Gym Floor, Free Weights, Lockers, Standard App</td>
+              <td><button class="btn btn-outline btn-sm" onclick="selectPackageAndRegister('Basic Package')">Join Basic</button></td>
+            </tr>
+            <tr>
+              <td><strong>Standard Tier</strong> <span class="status-badge active" style="font-size: 0.65rem;">Best Value</span></td>
+              <td><span class="fees-price">$49</span> / mo</td>
+              <td><strong>$125</strong> ($41.6/mo)</td>
+              <td><strong>$440</strong> ($36.6/mo)</td>
+              <td>24/7 Access, All Group Classes, Sauna, Guest Passes</td>
+              <td><button class="btn btn-primary btn-sm" onclick="selectPackageAndRegister('Standard Package')">Join Standard</button></td>
+            </tr>
+            <tr>
+              <td><strong>Premium VIP</strong></td>
+              <td><span class="fees-price">$79</span> / mo</td>
+              <td><strong>$199</strong> ($66.3/mo)</td>
+              <td><strong>$699</strong> ($58.2/mo)</td>
+              <td>VIP All-Access, PT Sessions, Cold Plunge, Custom Diet</td>
+              <td><button class="btn btn-outline btn-sm" onclick="selectPackageAndRegister('Premium Package')">Join VIP</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Extra Add-ons & Personal Training Fees -->
+      <h3 style="font-size: 1.4rem; margin-bottom: 20px; color: #fff;">Additional Specialized Add-ons</h3>
+      <div class="addons-grid">
+        <div class="addon-card">
+          <div class="addon-info">
+            <h4>1-on-1 Personal Trainer Session</h4>
+            <p>60-minute targeted private session</p>
+          </div>
+          <div class="addon-price">$40</div>
+        </div>
+        <div class="addon-card">
+          <div class="addon-info">
+            <h4>InBody 570 Composition Scan</h4>
+            <p>Body fat %, visceral fat, and muscle balance</p>
+          </div>
+          <div class="addon-price">$15</div>
+        </div>
+        <div class="addon-card">
+          <div class="addon-info">
+            <h4>Private Permanent Locker</h4>
+            <p>Reserved private locker & towel service</p>
+          </div>
+          <div class="addon-price">$20/mo</div>
+        </div>
+        <div class="addon-card">
+          <div class="addon-info">
+            <h4>Day Guest Pass</h4>
+            <p>Single-day full facility pass for visitors</p>
+          </div>
+          <div class="addon-price">$15/day</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE BONUS: BMI FITNESS CALCULATOR
+       ========================================================================== -->
+  <section class="container" id="bmi">
+    <div class="bmi-section">
+      <div class="bmi-grid">
+        
+        <div>
+          <div class="section-badge"><i class="fa-solid fa-calculator"></i> Quick Health Tool</div>
+          <h2 style="font-size: 2.2rem; margin-bottom: 14px; color: #fff;">CALCULATE YOUR <span>BMI SCORE</span></h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+            Body Mass Index (BMI) is a quick indicator of healthy body composition. Enter your height and weight to get customized fitness advice.
+          </p>
+
+          <div class="bmi-inputs">
+            <div class="bmi-input-row">
+              <div class="form-group">
+                <label class="form-label" for="bmiHeight">Height (cm)</label>
+                <input type="number" id="bmiHeight" class="form-control" placeholder="e.g. 178" value="175" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="bmiWeight">Weight (kg)</label>
+                <input type="number" id="bmiWeight" class="form-control" placeholder="e.g. 75" value="72" />
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="calculateBMI()">
+              <i class="fa-solid fa-arrows-rotate"></i> Compute BMI
+            </button>
+          </div>
+        </div>
+
+        <div class="bmi-result-card">
+          <p style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; font-weight: 700;">Calculated BMI Rating</p>
+          <div class="bmi-score" id="bmiScoreDisplay">23.5</div>
+          <span class="bmi-status-badge" id="bmiBadgeDisplay" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">
+            Normal & Healthy Weight
+          </span>
+          <p id="bmiAdviceDisplay" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 16px;">
+            You have an optimal weight! Our Standard or Hypertrophy programs will help you sculpt lean muscle and optimize endurance.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MEMBER REGISTRATION SECTION
+       ========================================================================== -->
+  <section class="section" id="register" style="background: var(--bg-surface-elevated);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-id-card"></i> Instant Enrollment</div>
+        <h2 class="section-title">START YOUR <span>FITNESS JOURNEY</span></h2>
+        <p class="section-subtitle">Complete the registration form below. Your membership account is instantly saved and processed.</p>
+      </div>
+
+      <div class="register-container">
+        <form id="memberRegistrationForm" onsubmit="handleMemberRegistration(event)">
+          <div class="register-grid">
+            
+            <!-- Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="regFullName">Full Name <span class="required-star">*</span></label>
+              <input type="text" id="regFullName" class="form-control" placeholder="e.g. Alex Morgan" required />
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-group">
+              <label class="form-label" for="regEmail">Email Address <span class="required-star">*</span></label>
+              <input type="email" id="regEmail" class="form-control" placeholder="alex.morgan@example.com" required />
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+              <label class="form-label" for="regPhone">Phone Number <span class="required-star">*</span></label>
+              <input type="tel" id="regPhone" class="form-control" placeholder="+1 (555) 234-5678" required />
+            </div>
+
+            <!-- Age & Gender in row -->
+            <div class="form-group">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div>
+                  <label class="form-label" for="regAge">Age <span class="required-star">*</span></label>
+                  <input type="number" id="regAge" class="form-control" min="14" max="99" placeholder="24" required />
+                </div>
+                <div>
+                  <label class="form-label" for="regGender">Gender <span class="required-star">*</span></label>
+                  <select id="regGender" class="form-control" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address (Full width) -->
+            <div class="form-group full-width">
+              <label class="form-label" for="regAddress">Residential Address <span class="required-star">*</span></label>
+              <input type="text" id="regAddress" class="form-control" placeholder="Street Address, City, State, ZIP" required />
+            </div>
+
+            <!-- Select Membership Package -->
+            <div class="form-group">
+              <label class="form-label" for="regPackage">Membership Package <span class="required-star">*</span></label>
+              <select id="regPackage" class="form-control" required>
+                <option value="Basic Package">Basic Package — $29/mo</option>
+                <option value="Standard Package" selected>Standard Package — $49/mo (Recommended)</option>
+                <option value="Premium Package">Premium Package — $79/mo (VIP All-Access)</option>
+              </select>
+            </div>
+
+            <!-- Select Course -->
+            <div class="form-group">
+              <label class="form-label" for="regCourse">Select Preferred Course / Class <span class="required-star">*</span></label>
+              <select id="regCourse" class="form-control" required>
+                <option value="Weight Training">Weight Training ($45/mo)</option>
+                <option value="Cardio Fitness">Cardio Fitness ($35/mo)</option>
+                <option value="Yoga">Yoga ($30/mo)</option>
+                <option value="CrossFit">CrossFit ($55/mo)</option>
+                <option value="Personal Training">Personal Training ($80/mo)</option>
+                <option value="Strength & Conditioning">Strength & Conditioning ($50/mo)</option>
+                <option value="General Gym Access">General Gym Access Only</option>
+              </select>
+            </div>
+
+            <!-- Start Date -->
+            <div class="form-group">
+              <label class="form-label" for="regStartDate">Membership Start Date <span class="required-star">*</span></label>
+              <input type="date" id="regStartDate" class="form-control" required />
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label class="form-label" for="regPassword">Account Password <span class="required-star">*</span></label>
+              <input type="password" id="regPassword" class="form-control" placeholder="Create a secure password" minlength="6" required />
+            </div>
+
+            <!-- Terms and Submit -->
+            <div class="full-width">
+              <label class="form-terms">
+                <input type="checkbox" id="regTerms" required />
+                <span>I agree to the Iron Force Fitness terms of service, safety waiver, and club conduct guidelines.</span>
+              </label>
+            </div>
+
+            <div class="full-width" style="margin-top: 15px;">
+              <button type="submit" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1.05rem;">
+                <i class="fa-solid fa-check-circle"></i> Complete Registration
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TESTIMONIALS
+       ========================================================================== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fa-solid fa-comment-dots"></i> Member Stories</div>
+        <h2 class="section-title">REAL PEOPLE. <span>REAL TRANSFORMATIONS</span></h2>
+        <p class="section-subtitle">Discover how our community members transformed their energy, physique, and life inside Iron Force.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"Joining Iron Force was the single best fitness decision I've made. Lost 26 lbs in 4 months and hit a 315 lb deadlift with Coach Marcus's programming!"</p>
+          </div>
+          <div class="testi-author">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" class="testi-avatar" alt="Brandon Cole" />
+            <div>
+              <h4 class="testi-name">Brandon Cole</h4>
+              <p class="testi-role">Member since Oct 2023 • Standard Plan</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"The facilities are spotless and the 24/7 access is perfect for my busy schedule as a surgeon. The infrared recovery sauna is a game changer."</p>
+          </div>
+          <div class="testi-author">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="testi-avatar" alt="Dr. Samantha Reid" />
+            <div>
+              <h4 class="testi-name">Dr. Samantha Reid</h4>
+              <p class="testi-role">Member since Jan 2024 • Premium VIP</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"The CrossFit and HIIT coaches bring relentless positive energy. Everyone cheers you on from your first rep to your final sprint."</p>
+          </div>
+          <div class="testi-author">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" class="testi-avatar" alt="Liam Rodriguez" />
+            <div>
+              <h4 class="testi-name">Liam Rodriguez</h4>
+              <p class="testi-role">Member since May 2023 • CrossFit Tier</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      
+      <!-- Security Disclaimer Notice -->
+      <div class="security-notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          <strong>Front-End Demonstration Notice:</strong> Admin authentication and member management in this demo utilize browser <code>localStorage</code>. In a production commercial deployment, sensitive data and transactions require a secure backend API, hashed passwords in encrypted databases, and token-based authentication.
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#home" class="brand-logo" style="margin-bottom: 18px;">
+            <div class="logo-icon"><i class="fa-solid fa-dumbbell"></i></div>
+            <div>IRON FORCE <span>FITNESS</span></div>
+          </a>
+          <p class="footer-desc">
+            The premier high-performance fitness center dedicated to helping you shatter limitations and reach peak human performance.
+          </p>
+          <div class="trainer-socials">
+            <a href="#" class="trainer-social-link"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="trainer-social-link"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="trainer-social-link"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="trainer-social-link"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Home Arena</a></li>
+            <li><a href="#benefits">Club Benefits</a></li>
+            <li><a href="#packages">Membership Packages</a></li>
+            <li><a href="#courses">Courses & Schedules</a></li>
+            <li><a href="#trainers">Certified Trainers</a></li>
+            <li><a href="#pricing">Detailed Fee Matrix</a></li>
+            <li><a href="#register">New Member Registration</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Opening Hours</h4>
+          <ul class="footer-hours-list">
+            <li><span>Mon – Fri:</span> <strong>05:00 AM – 11:00 PM</strong></li>
+            <li><span>Saturday:</span> <strong>06:00 AM – 10:00 PM</strong></li>
+            <li><span>Sunday:</span> <strong>07:00 AM – 09:00 PM</strong></li>
+            <li><span>VIP Members:</span> <strong style="color: var(--primary);">24/7 Keycard Entry</strong></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Club Headquarters</h4>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 14px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> 742 Iron Forge Blvd, Suite 100<br />
+            Metro Fitness District, NY 10001<br />
+            <i class="fa-solid fa-phone" style="color: var(--primary); margin-top: 8px;"></i> +1 (800) 555-IRON<br />
+            <i class="fa-solid fa-envelope" style="color: var(--primary); margin-top: 8px;"></i> info@ironforcefitness.com
+          </p>
+          <button class="btn btn-admin-nav btn-sm" onclick="openAdminModal()">
+            <i class="fa-solid fa-shield-halved"></i> Staff Admin Portal
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 IRON FORCE FITNESS. All Rights Reserved. Built with Modern HTML5, CSS3 & JavaScript.</p>
+        <p>Designed for Ultimate Fitness Performance.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       ADMIN LOGIN MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="admin-login-header">
+        <div class="admin-login-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h2 style="font-size: 1.6rem; color: #fff;">STAFF ADMIN LOGIN</h2>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Enter authorized credentials to manage gym members</p>
+      </div>
+
+      <div class="admin-demo-box">
+        <div>
+          <strong>Demo Credentials:</strong><br />
+          User: <code>admin</code> | Pass: <code>admin123</code>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="autoFillAdminDemo()">Auto-Fill</button>
+      </div>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label class="form-label" for="adminUsername">Username</label>
+          <input type="text" id="adminUsername" class="form-control" placeholder="admin" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label" for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" class="form-control" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ADMIN DASHBOARD MODAL (FULL MANAGEMENT SUITE)
+       ========================================================================== -->
+  <div class="modal-overlay" id="adminDashboardModal">
+    <div class="modal-box large">
+      
+      <!-- Dashboard Top Bar -->
+      <div class="dashboard-header">
+        <div class="dashboard-title-area">
+          <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> IRON FORCE <span>ADMIN DASHBOARD</span></h2>
+          <span style="color: var(--text-muted); font-size: 0.85rem;" id="dashLiveTime">Live Staff Management Center</span>
+        </div>
+
+        <div class="dashboard-actions">
+          <button class="btn btn-secondary btn-sm" onclick="openAddMemberModal()">
+            <i class="fa-solid fa-user-plus"></i> Add Member
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="exportMembersCSV()">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="resetDemoDataPrompt()">
+            <i class="fa-solid fa-rotate-left"></i> Reset Demo
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="handleAdminLogout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          </button>
+          <button class="modal-close-btn" style="position: static;" onclick="closeAdminDashboard()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="dashboard-stats-grid">
+        <div class="dash-stat-card">
+          <div class="dash-stat-icon" style="background: rgba(255, 85, 0, 0.15); color: var(--primary);">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="dash-stat-info">
+            <h4>TOTAL MEMBERS</h4>
+            <div class="stat-number" id="dashTotalMembers">0</div>
+          </div>
+        </div>
+
+        <div class="dash-stat-card">
+          <div class="dash-stat-icon" style="background: var(--status-active-bg); color: var(--status-active);">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div class="dash-stat-info">
+            <h4>ACTIVE MEMBERS</h4>
+            <div class="stat-number" id="dashActiveMembers">0</div>
+          </div>
+        </div>
+
+        <div class="dash-stat-card">
+          <div class="dash-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+            <i class="fa-solid fa-dollar-sign"></i>
+          </div>
+          <div class="dash-stat-info">
+            <h4>MONTHLY REVENUE</h4>
+            <div class="stat-number" id="dashMonthlyRevenue">$0</div>
+          </div>
+        </div>
+
+        <div class="dash-stat-card">
+          <div class="dash-stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+            <i class="fa-solid fa-dumbbell"></i>
+          </div>
+          <div class="dash-stat-info">
+            <h4>ACTIVE COURSES / STAFF</h4>
+            <div class="stat-number">6 / 4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Nav Tabs -->
+      <div class="dash-tabs">
+        <button class="dash-tab-btn active" onclick="switchDashTab('membersTab', this)">
+          <i class="fa-solid fa-table-list"></i> Member Management
+        </button>
+        <button class="dash-tab-btn" onclick="switchDashTab('analyticsTab', this)">
+          <i class="fa-solid fa-chart-pie"></i> Statistics & Revenue
+        </button>
+        <button class="dash-tab-btn" onclick="switchDashTab('coursesTab', this)">
+          <i class="fa-solid fa-graduation-cap"></i> Courses & Pricing
+        </button>
+      </div>
+
+      <!-- Tab 1: Member Management -->
+      <div class="dash-tab-content active" id="membersTab">
+        <div class="table-toolbar">
+          <div class="search-filter-group">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="memberSearchInput" class="form-control" placeholder="Search name, email, or ID..." onkeyup="filterMembersTable()" />
+            </div>
+
+            <select id="filterPackageSelect" class="form-control" style="width: auto;" onchange="filterMembersTable()">
+              <option value="ALL">All Packages</option>
+              <option value="Basic Package">Basic Package</option>
+              <option value="Standard Package">Standard Package</option>
+              <option value="Premium Package">Premium Package</option>
+            </select>
+
+            <select id="filterStatusSelect" class="form-control" style="width: auto;" onchange="filterMembersTable()">
+              <option value="ALL">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Expired">Expired</option>
+            </select>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Showing <span id="filteredMembersCount" style="color: #fff; font-weight: 700;">0</span> records
+          </div>
+        </div>
+
+        <!-- Members Table -->
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Contact</th>
+                <th>Package</th>
+                <th>Course</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Analytics & Charts -->
+      <div class="dash-tab-content" id="analyticsTab">
+        <div class="charts-grid">
+          <div class="chart-container-card">
+            <h3><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> Membership Package Breakdown</h3>
+            <div style="position: relative; flex-grow: 1;">
+              <canvas id="packageChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-container-card">
+            <h3><i class="fa-solid fa-chart-column" style="color: var(--status-active);"></i> Monthly Revenue & Projections</h3>
+            <div style="position: relative; flex-grow: 1;">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Courses & Packages Overview -->
+      <div class="dash-tab-content" id="coursesTab">
+        <h3 style="margin-bottom: 16px; color: #fff;">Available Active Courses</h3>
+        <div class="fees-table-wrapper" style="margin-bottom: 30px;">
+          <table class="fees-table">
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Lead Trainer</th>
+                <th>Monthly Rate</th>
+                <th>Weekly Capacity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Weight Training & Hypertrophy</strong></td><td>Coach Marcus Vance</td><td>$45/mo</td><td>30 / class</td><td><span class="status-badge active">Open</span></td></tr>
+              <tr><td><strong>Cardio HIIT & Endurance</strong></td><td>Coach Elena Rostova</td><td>$35/mo</td><td>25 / class</td><td><span class="status-badge active">Open</span></td></tr>
+              <tr><td><strong>Power Yoga & Flexibility</strong></td><td>Coach Priya Sharma</td><td>$30/mo</td><td>20 / class</td><td><span class="status-badge active">Open</span></td></tr>
+              <tr><td><strong>CrossFit & Functional Strength</strong></td><td>Coach Jaxson Thorne</td><td>$55/mo</td><td>20 / class</td><td><span class="status-badge active">Open</span></td></tr>
+              <tr><td><strong>1-on-1 Personal Training</strong></td><td>Coach David Miller</td><td>$80/mo</td><td>10 / week</td><td><span class="status-badge pending">Limited</span></td></tr>
+              <tr><td><strong>Strength & Conditioning</strong></td><td>Coach Sarah Connor</td><td>$50/mo</td><td>25 / class</td><td><span class="status-badge active">Open</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MEMBER DETAILS / ID CARD MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="memberViewModal">
+    <div class="modal-box" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('memberViewModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="id-card-preview">
+        <div class="id-card-header">
+          <div class="brand-logo" style="font-size: 1.2rem;">
+            <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem;"><i class="fa-solid fa-dumbbell"></i></div>
+            <div>IRON FORCE <span>VIP MEMBER</span></div>
+          </div>
+          <span class="status-badge active" id="viewMemberStatusBadge">Active</span>
+        </div>
+
+        <div class="id-card-grid">
+          <div class="id-card-avatar" id="viewMemberAvatar">JD</div>
+          <div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 4px; color: #fff;" id="viewMemberName">John Doe</h3>
+            <p style="color: var(--primary); font-weight: 700; font-size: 0.88rem;" id="viewMemberId">IF-2941</p>
+            <p style="color: var(--text-secondary); font-size: 0.85rem;" id="viewMemberPackage">Standard Package</p>
+          </div>
+        </div>
+
+        <div class="id-card-details" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+          <div>
+            <div class="id-card-label">Email</div>
+            <div id="viewMemberEmail" style="color: #fff;">john@example.com</div>
+          </div>
+          <div>
+            <div class="id-card-label">Phone</div>
+            <div id="viewMemberPhone" style="color: #fff;">+1 555-0192</div>
+          </div>
+          <div>
+            <div class="id-card-label">Enrolled Course</div>
+            <div id="viewMemberCourse" style="color: #fff;">Weight Training</div>
+          </div>
+          <div>
+            <div class="id-card-label">Member Since</div>
+            <div id="viewMemberDate" style="color: #fff;">2026-01-15</div>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <div class="id-card-label">Address</div>
+            <div id="viewMemberAddress" style="color: #fff;">123 Iron Street, Metro City</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 12px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('memberViewModal')">Close</button>
+        <button class="btn btn-primary btn-sm" onclick="window.print()">
+          <i class="fa-solid fa-print"></i> Print ID Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ADD / EDIT MEMBER MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="memberEditModal">
+    <div class="modal-box" style="max-width: 650px;">
+      <button class="modal-close-btn" onclick="closeModal('memberEditModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <h2 style="font-size: 1.5rem; margin-bottom: 20px; color: #fff;" id="editModalTitle">
+        <i class="fa-solid fa-user-pen" style="color: var(--primary);"></i> Edit Member Details
+      </h2>
+
+      <form id="memberEditForm" onsubmit="handleSaveMemberEdit(event)">
+        <input type="hidden" id="editMemberId" />
+
+        <div class="register-grid">
+          <div class="form-group">
+            <label class="form-label" for="editFullName">Full Name</label>
+            <input type="text" id="editFullName" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editEmail">Email Address</label>
+            <input type="email" id="editEmail" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editPhone">Phone</label>
+            <input type="tel" id="editPhone" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editStatus">Membership Status</label>
+            <select id="editStatus" class="form-control" required>
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Expired">Expired</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editPackage">Membership Package</label>
+            <select id="editPackage" class="form-control" required>
+              <option value="Basic Package">Basic Package</option>
+              <option value="Standard Package">Standard Package</option>
+              <option value="Premium Package">Premium Package</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editCourse">Course</label>
+            <select id="editCourse" class="form-control" required>
+              <option value="Weight Training">Weight Training</option>
+              <option value="Cardio Fitness">Cardio Fitness</option>
+              <option value="Yoga">Yoga</option>
+              <option value="CrossFit">CrossFit</option>
+              <option value="Personal Training">Personal Training</option>
+              <option value="Strength & Conditioning">Strength & Conditioning</option>
+              <option value="General Gym Access">General Gym Access Only</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label" for="editAddress">Address</label>
+            <input type="text" id="editAddress" class="form-control" required />
+          </div>
+
+          <div class="full-width" style="margin-top: 15px; display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('memberEditModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Member</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       REGISTRATION SUCCESS CONFIRMATION MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="regSuccessModal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('regSuccessModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--status-active-bg); color: var(--status-active); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px; border: 2px solid var(--status-active);">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+
+      <h2 style="font-size: 1.8rem; margin-bottom: 10px; color: #fff;">WELCOME TO IRON FORCE!</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+        Your membership has been registered successfully. We are excited to support your fitness transformation!
+      </p>
+
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px; text-align: left;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Member ID:</span>
+          <strong id="successMemberId" style="color: var(--primary);">IF-8839</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Name:</span>
+          <strong id="successMemberName" style="color: #fff;">Alex Morgan</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Selected Package:</span>
+          <strong id="successMemberPackage" style="color: #fff;">Standard Package</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Start Date:</span>
+          <strong id="successMemberDate" style="color: #fff;">Today</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button class="btn btn-primary" onclick="closeModal('regSuccessModal')">
+          <i class="fa-solid fa-thumbs-up"></i> Got It!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       TOAST NOTIFICATION CONTAINER
+       ========================================================================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT LOGIC & LOCALSTORAGE INTEGRATION
+       ========================================================================== -->
+  <script>
+    /**
+     * ==========================================================================
+     * IRON FORCE FITNESS — CORE JAVASCRIPT ENGINE
+     * Features:
+     * - Member registration & dynamic localStorage persistence
+     * - Auto-seeded realistic sample members
+     * - Admin authentication & full dashboard analytics
+     * - Member CRUD (Create, Read, Update, Delete) & Search/Filters
+     * - Chart.js integration for visual KPI reporting
+     * - CSV export utility
+     * - Dynamic Pricing & Interactive BMI calculator
+     * ==========================================================================
+     */
+
+    const STORAGE_KEY = 'ironforce_fitness_members';
+    const ADMIN_AUTH_KEY = 'ironforce_admin_session';
+
+    // Initial Demo Seed Members
+    const SAMPLE_MEMBERS = [
+      {
+        id: 'IF-1001',
+        fullName: 'Alexander Vance',
+        email: 'alex.vance@example.com',
+        phone: '+1 (555) 234-8891',
+        age: 28,
+        gender: 'Male',
+        address: '742 Evergreen Terrace, Springfield',
+        package: 'Standard Package',
+        course: 'Weight Training',
+        startDate: '2026-01-10',
+        status: 'Active',
+        isDemo: true
+      },
+      {
+        id: 'IF-1002',
+        fullName: 'Sophia Martinez',
+        email: 'sophia.m@example.com',
+        phone: '+1 (555) 872-1144',
+        age: 26,
+        gender: 'Female',
+        address: '1088 Ocean Drive, Miami Beach, FL',
+        package: 'Premium Package',
+        course: 'CrossFit',
+        startDate: '2026-02-01',
+        status: 'Active',
+        isDemo: true
+      },
+      {
+        id: 'IF-1003',
+        fullName: 'Marcus Sterling',
+        email: 'marcus.s@example.com',
+        phone: '+1 (555) 443-9021',
+        age: 34,
+        gender: 'Male',
+        address: '320 Park Avenue, New York, NY',
+        package: 'Basic Package',
+        course: 'Cardio Fitness',
+        startDate: '2026-02-15',
+        status: 'Pending',
+        isDemo: true
+      },
+      {
+        id: 'IF-1004',
+        fullName: 'Emily Chen',
+        email: 'emily.chen@example.com',
+        phone: '+1 (555) 678-3312',
+        age: 31,
+        gender: 'Female',
+        address: '450 California St, San Francisco, CA',
+        package: 'Premium Package',
+        course: 'Yoga',
+        startDate: '2025-11-20',
+        status: 'Active',
+        isDemo: true
+      },
+      {
+        id: 'IF-1005',
+        fullName: 'Derrick O\'Connor',
+        email: 'derrick.oc@example.com',
+        phone: '+1 (555) 918-2231',
+        age: 42,
+        gender: 'Male',
+        address: '88 Michigan Ave, Chicago, IL',
+        package: 'Basic Package',
+        course: 'General Gym Access',
+        startDate: '2025-08-01',
+        status: 'Expired',
+        isDemo: true
+      },
+      {
+        id: 'IF-1006',
+        fullName: 'Jessica Taylor',
+        email: 'jess.taylor@example.com',
+        phone: '+1 (555) 332-9011',
+        age: 29,
+        gender: 'Female',
+        address: '210 Sunset Blvd, Los Angeles, CA',
+        package: 'Standard Package',
+        course: 'Strength & Conditioning',
+        startDate: '2026-02-28',
+        status: 'Active',
+        isDemo: true
+      }
+    ];
+
+    // Chart Instances
+    let packageChartInstance = null;
+    let revenueChartInstance = null;
+
+    // Billing cycle toggle state ('monthly' or 'annual')
+    let currentBillingCycle = 'monthly';
+
+    /* ==========================================================================
+       INITIALIZATION & STORAGE HELPERS
+       ========================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeMembersStorage();
+      setupNavbarScroll();
+      setupDefaultDate();
+      updateHeroLiveCount();
+    });
+
+    function getStoredMembers() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        console.error('Failed to parse localStorage data', e);
+        return [];
+      }
+    }
+
+    function saveStoredMembers(members) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+      updateHeroLiveCount();
+    }
+
+    function initializeMembersStorage() {
+      const existing = localStorage.getItem(STORAGE_KEY);
+      if (!existing || JSON.parse(existing).length === 0) {
+        saveStoredMembers(SAMPLE_MEMBERS);
+      }
+    }
+
+    function setupDefaultDate() {
+      const dateInput = document.getElementById('regStartDate');
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+      }
+    }
+
+    function updateHeroLiveCount() {
+      const members = getStoredMembers();
+      const countEl = document.getElementById('heroStatMembers');
+      if (countEl) {
+        countEl.innerText = (1850 + members.length).toLocaleString();
+      }
+    }
+
+    /* ==========================================================================
+       NAVBAR & SCROLL BEHAVIOR
+       ========================================================================== */
+    function setupNavbarScroll() {
+      const header = document.getElementById('siteHeader');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('open');
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.remove('open');
+    }
+
+    /* ==========================================================================
+       BILLING CYCLE TOGGLE & DYNAMIC PRICING
+       ========================================================================== */
+    function toggleBillingCycle() {
+      setBillingCycle(currentBillingCycle === 'monthly' ? 'annual' : 'monthly');
+    }
+
+    function setBillingCycle(cycle) {
+      currentBillingCycle = cycle;
+      const toggle = document.getElementById('billingToggle');
+      const monthlyLabel = document.getElementById('monthlyLabel');
+      const annualLabel = document.getElementById('annualLabel');
+      const prices = document.querySelectorAll('.package-price');
+
+      if (cycle === 'annual') {
+        toggle.classList.add('active');
+        monthlyLabel.classList.remove('active');
+        annualLabel.classList.add('active');
+        prices.forEach(el => {
+          el.innerText = el.getAttribute('data-annual');
+        });
+      } else {
+        toggle.classList.remove('active');
+        monthlyLabel.classList.add('active');
+        annualLabel.classList.remove('active');
+        prices.forEach(el => {
+          el.innerText = el.getAttribute('data-monthly');
+        });
+      }
+    }
+
+    /* ==========================================================================
+       PACKAGE & COURSE QUICK SELECTION
+       ========================================================================== */
+    function selectPackageAndRegister(packageName) {
+      const packageSelect = document.getElementById('regPackage');
+      if (packageSelect) {
+        packageSelect.value = packageName;
+      }
+      smoothScrollTo('register');
+      showToast(`Selected ${packageName}. Please fill in your registration details!`, 'info');
+    }
+
+    function selectCourseAndRegister(courseName) {
+      const courseSelect = document.getElementById('regCourse');
+      if (courseSelect) {
+        courseSelect.value = courseName;
+      }
+      smoothScrollTo('register');
+      showToast(`Selected course: ${courseName}. Complete registration below!`, 'info');
+    }
+
+    function filterCourses(category) {
+      const buttons = document.querySelectorAll('.courses-filter .filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const cards = document.querySelectorAll('#coursesGrid .course-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function smoothScrollTo(elementId) {
+      const target = document.getElementById(elementId);
+      if (target) {
+        const offset = 90;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = target.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    /* ==========================================================================
+       MEMBER REGISTRATION FORM HANDLER
+       ========================================================================== */
+    function handleMemberRegistration(event) {
+      event.preventDefault();
+
+      const fullName = document.getElementById('regFullName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('regPhone').value.trim();
+      const age = parseInt(document.getElementById('regAge').value, 10);
+      const gender = document.getElementById('regGender').value;
+      const address = document.getElementById('regAddress').value.trim();
+      const pkg = document.getElementById('regPackage').value;
+      const course = document.getElementById('regCourse').value;
+      const startDate = document.getElementById('regStartDate').value;
+      const password = document.getElementById('regPassword').value;
+
+      if (!fullName || !email || !phone || !age || !gender || !address || !pkg || !course || !startDate || !password) {
+        showToast('Please fill out all required fields.', 'error');
+        return;
+      }
+
+      const members = getStoredMembers();
+      
+      // Check duplicate email
+      const exists = members.some(m => m.email === email);
+      if (exists) {
+        showToast('A member with this email address already exists.', 'error');
+        return;
+      }
+
+      // Generate random unique ID (e.g. IF-7492)
+      const newId = 'IF-' + Math.floor(1000 + Math.random() * 9000);
+
+      const newMember = {
+        id: newId,
+        fullName,
+        email,
+        phone,
+        age,
+        gender,
+        address,
+        package: pkg,
+        course,
+        startDate,
+        status: 'Active',
+        isDemo: false,
+        createdAt: new Date().toISOString()
+      };
+
+      members.unshift(newMember);
+      saveStoredMembers(members);
+
+      // Trigger Confetti Celebration
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+
+      // Update Confirmation Modal fields
+      document.getElementById('successMemberId').innerText = newId;
+      document.getElementById('successMemberName').innerText = fullName;
+      document.getElementById('successMemberPackage').innerText = pkg;
+      document.getElementById('successMemberDate').innerText = startDate;
+
+      openModal('regSuccessModal');
+      document.getElementById('memberRegistrationForm').reset();
+      setupDefaultDate();
+
+      showToast(`Welcome to Iron Force, ${fullName}! Member ID: ${newId}`, 'success');
+    }
+
+    /* ==========================================================================
+       BMI CALCULATOR LOGIC
+       ========================================================================== */
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('bmiHeight').value);
+      const weight = parseFloat(document.getElementById('bmiWeight').value);
+
+      if (!height || !weight || height <= 0 || weight <= 0) {
+        showToast('Please enter valid height and weight values.', 'error');
+        return;
+      }
+
+      const heightInMeters = height / 100;
+      const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+
+      const scoreEl = document.getElementById('bmiScoreDisplay');
+      const badgeEl = document.getElementById('bmiBadgeDisplay');
+      const adviceEl = document.getElementById('bmiAdviceDisplay');
+
+      scoreEl.innerText = bmi;
+
+      if (bmi < 18.5) {
+        badgeEl.style.background = 'rgba(59, 130, 246, 0.2)';
+        badgeEl.style.color = '#3b82f6';
+        badgeEl.innerText = 'Underweight';
+        adviceEl.innerText = 'We recommend our Weight Training & Hypertrophy program combined with a caloric surplus nutrition blueprint.';
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        badgeEl.style.background = 'rgba(16, 185, 129, 0.2)';
+        badgeEl.style.color = '#10b981';
+        badgeEl.innerText = 'Normal & Healthy Weight';
+        adviceEl.innerText = 'Excellent shape! Our Standard or CrossFit programs will help you sculpt lean muscular definition and endurance.';
+      } else if (bmi >= 25 && bmi <= 29.9) {
+        badgeEl.style.background = 'rgba(245, 158, 11, 0.2)';
+        badgeEl.style.color = '#f59e0b';
+        badgeEl.innerText = 'Overweight';
+        adviceEl.innerText = 'We suggest our Cardio HIIT or CrossFit conditioning programs paired with our macro coaching for rapid fat oxidation.';
+      } else {
+        badgeEl.style.background = 'rgba(239, 68, 68, 0.2)';
+        badgeEl.style.color = '#ef4444';
+        badgeEl.innerText = 'Obese Class Range';
+        adviceEl.innerText = 'Our dedicated 1-on-1 Personal Training will guide you safely with low-impact joint conditioning and sustainable dietary plans.';
+      }
+
+      showToast(`BMI calculated: ${bmi}`, 'info');
+    }
+
+    /* ==========================================================================
+       ADMIN AUTHENTICATION & MODAL CONTROLLERS
+       ========================================================================== */
+    function openAdminModal() {
+      const isLogged = sessionStorage.getItem(ADMIN_AUTH_KEY);
+      if (isLogged === 'true') {
+        openAdminDashboard();
+      } else {
+        openModal('adminLoginModal');
+      }
+    }
+
+    function closeAdminModal() {
+      closeModal('adminLoginModal');
+    }
+
+    function autoFillAdminDemo() {
+      document.getElementById('adminUsername').value = 'admin';
+      document.getElementById('adminPassword').value = 'admin123';
+      showToast('Demo credentials populated.', 'info');
+    }
+
+    function handleAdminLogin(event) {
+      event.preventDefault();
+      const user = document.getElementById('adminUsername').value.trim();
+      const pass = document.getElementById('adminPassword').value.trim();
+
+      if (user === 'admin' && pass === 'admin123') {
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        closeModal('adminLoginModal');
+        openAdminDashboard();
+        showToast('Authenticated successfully as Administrator.', 'success');
+      } else {
+        showToast('Invalid credentials. Use admin / admin123.', 'error');
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem(ADMIN_AUTH_KEY);
+      closeAdminDashboard();
+      showToast('Logged out of Admin Portal.', 'info');
+    }
+
+    function openAdminDashboard() {
+      openModal('adminDashboardModal');
+      refreshAdminDashboard();
+      renderDashboardCharts();
+    }
+
+    function closeAdminDashboard() {
+      closeModal('adminDashboardModal');
+    }
+
+    /* ==========================================================================
+       ADMIN DASHBOARD LOGIC & STATS
+       ========================================================================== */
+    function refreshAdminDashboard() {
+      const members = getStoredMembers();
+      
+      const totalCount = members.length;
+      const activeCount = members.filter(m => m.status === 'Active').length;
+      
+      // Calculate estimated monthly revenue based on active members
+      const revenue = members.filter(m => m.status === 'Active').reduce((sum, m) => {
+        if (m.package.includes('Basic')) return sum + 29;
+        if (m.package.includes('Standard')) return sum + 49;
+        if (m.package.includes('Premium')) return sum + 79;
+        return sum + 49;
+      }, 0);
+
+      document.getElementById('dashTotalMembers').innerText = totalCount;
+      document.getElementById('dashActiveMembers').innerText = activeCount;
+      document.getElementById('dashMonthlyRevenue').innerText = '$' + revenue.toLocaleString();
+      
+      filterMembersTable();
+    }
+
+    function switchDashTab(tabId, btn) {
+      document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.dash-tab-content').forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      if (tabId === 'analyticsTab') {
+        renderDashboardCharts();
+      }
+    }
+
+    /* ==========================================================================
+       MEMBERS TABLE SEARCH, FILTER & RENDERING
+       ========================================================================== */
+    function filterMembersTable() {
+      const members = getStoredMembers();
+      const searchQuery = (document.getElementById('memberSearchInput').value || '').toLowerCase().trim();
+      const packageFilter = document.getElementById('filterPackageSelect').value;
+      const statusFilter = document.getElementById('filterStatusSelect').value;
+
+      const filtered = members.filter(m => {
+        const matchesSearch = !searchQuery || 
+          m.fullName.toLowerCase().includes(searchQuery) ||
+          m.email.toLowerCase().includes(searchQuery) ||
+          m.id.toLowerCase().includes(searchQuery) ||
+          m.phone.toLowerCase().includes(searchQuery);
+
+        const matchesPackage = packageFilter === 'ALL' || m.package === packageFilter;
+        const matchesStatus = statusFilter === 'ALL' || m.status === statusFilter;
+
+        return matchesSearch && matchesPackage && matchesStatus;
+      });
+
+      document.getElementById('filteredMembersCount').innerText = filtered.length;
+      renderMembersTable(filtered);
+    }
+
+    function renderMembersTable(membersList) {
+      const tbody = document.getElementById('membersTableBody');
+      if (!tbody) return;
+
+      if (membersList.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+              <i class="fa-solid fa-user-slash" style="font-size: 1.8rem; margin-bottom: 8px; display: block;"></i>
+              No gym members found matching criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = membersList.map(member => {
+        const initials = member.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const statusClass = (member.status || 'Active').toLowerCase();
+
+        return `
+          <tr>
+            <td>
+              <div class="member-cell-info">
+                <div class="member-avatar-circle">${initials}</div>
+                <div>
+                  <div class="member-meta-name">${escapeHtml(member.fullName)} ${member.isDemo ? '<span style="font-size: 0.68rem; color: var(--primary); border: 1px solid var(--primary); padding: 1px 4px; border-radius: 4px; margin-left: 4px;">DEMO</span>' : ''}</div>
+                  <div class="member-meta-id">${escapeHtml(member.id)} • ${member.gender || 'N/A'}, ${member.age || 'N/A'}y</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="color: #fff; font-size: 0.88rem;">${escapeHtml(member.email)}</div>
+              <div style="color: var(--text-muted); font-size: 0.78rem;">${escapeHtml(member.phone)}</div>
+            </td>
+            <td>
+              <strong style="color: #fff; font-size: 0.88rem;">${escapeHtml(member.package)}</strong>
+            </td>
+            <td>
+              <span style="color: var(--text-secondary); font-size: 0.85rem;">${escapeHtml(member.course || 'General Access')}</span>
+            </td>
+            <td>
+              <span style="color: var(--text-muted); font-size: 0.85rem;">${member.startDate || 'N/A'}</span>
+            </td>
+            <td>
+              <span class="status-badge ${statusClass}">${member.status || 'Active'}</span>
+            </td>
+            <td>
+              <div class="table-actions-btns">
+                <button class="action-icon-btn" title="View Member Card" onclick="viewMemberCard('${member.id}')">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="action-icon-btn" title="Edit Member" onclick="openEditMemberModal('${member.id}')">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="action-icon-btn" title="Toggle Status (Active/Expired)" onclick="toggleMemberStatus('${member.id}')">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+                <button class="action-icon-btn delete-btn" title="Delete Member" onclick="deleteMember('${member.id}')">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* ==========================================================================
+       MEMBER CRUD OPERATIONS (VIEW, EDIT, ADD, DELETE, TOGGLE)
+       ========================================================================== */
+    function viewMemberCard(memberId) {
+      const members = getStoredMembers();
+      const m = members.find(item => item.id === memberId);
+      if (!m) return;
+
+      const initials = m.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      
+      document.getElementById('viewMemberAvatar').innerText = initials;
+      document.getElementById('viewMemberName').innerText = m.fullName;
+      document.getElementById('viewMemberId').innerText = m.id;
+      document.getElementById('viewMemberPackage').innerText = m.package;
+      document.getElementById('viewMemberEmail').innerText = m.email;
+      document.getElementById('viewMemberPhone').innerText = m.phone;
+      document.getElementById('viewMemberCourse').innerText = m.course || 'General Access';
+      document.getElementById('viewMemberDate').innerText = m.startDate;
+      document.getElementById('viewMemberAddress').innerText = m.address || 'Not Provided';
+      
+      const badge = document.getElementById('viewMemberStatusBadge');
+      badge.className = `status-badge ${m.status.toLowerCase()}`;
+      badge.innerText = m.status;
+
+      openModal('memberViewModal');
+    }
+
+    function openAddMemberModal() {
+      document.getElementById('editModalTitle').innerHTML = '<i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Add New Gym Member';
+      document.getElementById('editMemberId').value = '';
+      document.getElementById('editFullName').value = '';
+      document.getElementById('editEmail').value = '';
+      document.getElementById('editPhone').value = '';
+      document.getElementById('editStatus').value = 'Active';
+      document.getElementById('editPackage').value = 'Standard Package';
+      document.getElementById('editCourse').value = 'Weight Training';
+      document.getElementById('editAddress').value = '';
+
+      openModal('memberEditModal');
+    }
+
+    function openEditMemberModal(memberId) {
+      const members = getStoredMembers();
+      const m = members.find(item => item.id === memberId);
+      if (!m) return;
+
+      document.getElementById('editModalTitle').innerHTML = '<i class="fa-solid fa-user-pen" style="color: var(--primary);"></i> Edit Member Details';
+      document.getElementById('editMemberId').value = m.id;
+      document.getElementById('editFullName').value = m.fullName;
+      document.getElementById('editEmail').value = m.email;
+      document.getElementById('editPhone').value = m.phone;
+      document.getElementById('editStatus').value = m.status;
+      document.getElementById('editPackage').value = m.package;
+      document.getElementById('editCourse').value = m.course || 'Weight Training';
+      document.getElementById('editAddress').value = m.address || '';
+
+      openModal('memberEditModal');
+    }
+
+    function handleSaveMemberEdit(event) {
+      event.preventDefault();
+
+      const memberId = document.getElementById('editMemberId').value;
+      const fullName = document.getElementById('editFullName').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const status = document.getElementById('editStatus').value;
+      const pkg = document.getElementById('editPackage').value;
+      const course = document.getElementById('editCourse').value;
+      const address = document.getElementById('editAddress').value.trim();
+
+      const members = getStoredMembers();
+
+      if (memberId) {
+        // Edit Existing Member
+        const index = members.findIndex(m => m.id === memberId);
+        if (index !== -1) {
+          members[index] = {
+            ...members[index],
+            fullName,
+            email,
+            phone,
+            status,
+            package: pkg,
+            course,
+            address
+          };
+          saveStoredMembers(members);
+          showToast(`Member ${fullName} updated successfully.`, 'success');
+        }
+      } else {
+        // Add New Member via Admin
+        const newId = 'IF-' + Math.floor(1000 + Math.random() * 9000);
+        const newMember = {
+          id: newId,
+          fullName,
+          email,
+          phone,
+          status,
+          package: pkg,
+          course,
+          address,
+          startDate: new Date().toISOString().split('T')[0],
+          age: 25,
+          gender: 'Unspecified',
+          isDemo: false
+        };
+        members.unshift(newMember);
+        saveStoredMembers(members);
+        showToast(`New member ${fullName} (${newId}) added.`, 'success');
+      }
+
+      closeModal('memberEditModal');
+      refreshAdminDashboard();
+      renderDashboardCharts();
+    }
+
+    function toggleMemberStatus(memberId) {
+      const members = getStoredMembers();
+      const member = members.find(m => m.id === memberId);
+      if (!member) return;
+
+      if (member.status === 'Active') member.status = 'Expired';
+      else if (member.status === 'Expired') member.status = 'Pending';
+      else member.status = 'Active';
+
+      saveStoredMembers(members);
+      refreshAdminDashboard();
+      renderDashboardCharts();
+      showToast(`${member.fullName}'s status updated to ${member.status}.`, 'info');
+    }
+
+    function deleteMember(memberId) {
+      const members = getStoredMembers();
+      const member = members.find(m => m.id === memberId);
+      if (!member) return;
+
+      const confirmDelete = confirm(`Are you sure you want to delete member: ${member.fullName} (${member.id})?`);
+      if (confirmDelete) {
+        const updated = members.filter(m => m.id !== memberId);
+        saveStoredMembers(updated);
+        refreshAdminDashboard();
+        renderDashboardCharts();
+        showToast(`Member ${member.fullName} was removed.`, 'info');
+      }
+    }
+
+    function resetDemoDataPrompt() {
+      if (confirm('Reset database to default demo members? (Any new test registrations will be reset)')) {
+        saveStoredMembers(SAMPLE_MEMBERS);
+        refreshAdminDashboard();
+        renderDashboardCharts();
+        showToast('Database reset to original demo members.', 'info');
+      }
+    }
+
+    /* ==========================================================================
+       EXPORT TO CSV
+       ========================================================================== */
+    function exportMembersCSV() {
+      const members = getStoredMembers();
+      if (members.length === 0) {
+        showToast('No member records available to export.', 'error');
+        return;
+      }
+
+      const headers = ['Member ID', 'Full Name', 'Email', 'Phone', 'Age', 'Gender', 'Package', 'Course', 'Start Date', 'Status', 'Address'];
+      const rows = members.map(m => [
+        m.id,
+        `"${(m.fullName || '').replace(/"/g, '""')}"`,
+        `"${(m.email || '').replace(/"/g, '""')}"`,
+        `"${(m.phone || '').replace(/"/g, '""')}"`,
+        m.age || '',
+        m.gender || '',
+        `"${(m.package || '').replace(/"/g, '""')}"`,
+        `"${(m.course || '').replace(/"/g, '""')}"`,
+        m.startDate || '',
+        m.status || '',
+        `"${(m.address || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `ironforce_members_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast('Member roster exported to CSV successfully.', 'success');
+    }
+
+    /* ==========================================================================
+       CHART.JS VISUAL ANALYTICS
+       ========================================================================== */
+    function renderDashboardCharts() {
+      const members = getStoredMembers();
+      
+      const basicCount = members.filter(m => m.package.includes('Basic')).length;
+      const standardCount = members.filter(m => m.package.includes('Standard')).length;
+      const premiumCount = members.filter(m => m.package.includes('Premium')).length;
+
+      // 1. Package Distribution Doughnut Chart
+      const packageCtx = document.getElementById('packageChart');
+      if (packageCtx) {
+        if (packageChartInstance) packageChartInstance.destroy();
+
+        packageChartInstance = new Chart(packageCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Basic ($29)', 'Standard ($49)', 'Premium VIP ($79)'],
+            datasets: [{
+              data: [basicCount, standardCount, premiumCount],
+              backgroundColor: ['#64748b', '#ff5500', '#10b981'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#94a3b8', font: { family: 'Outfit', size: 12 } }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Projected Revenue Bar Chart
+      const revenueCtx = document.getElementById('revenueChart');
+      if (revenueCtx) {
+        if (revenueChartInstance) revenueChartInstance.destroy();
+
+        revenueChartInstance = new Chart(revenueCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Current Mar'],
+            datasets: [{
+              label: 'Monthly Revenue ($)',
+              data: [12400, 14800, 16200, 18900, 21400, (members.filter(m => m.status === 'Active').length * 49) + 18000],
+              backgroundColor: 'rgba(255, 85, 0, 0.8)',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+              y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+    }
+
+    /* ==========================================================================
+       MODAL & TOAST UTILITIES
+       ========================================================================== */
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove('active');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = 'fa-info-circle';
+      if (type === 'success') icon = 'fa-circle-check';
+      if (type === 'error') icon = 'fa-circle-exclamation';
+
+      toast.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <div style="font-size: 0.9rem;">${escapeHtml(message)}</div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(50px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function escapeHtml(string) {
+      if (!string) return '';
+      return String(string)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
